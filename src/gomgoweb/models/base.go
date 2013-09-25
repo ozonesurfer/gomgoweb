@@ -180,7 +180,7 @@ func (this *MyDoc) AddAlbum(album Album) error {
 	database, session := GetDB()
 	defer session.Close()
 	collection := database.C(gomgoweb.BAND_COL)
-	band := Band{Name: this.Value["Name"].(string),
+/*	band := Band{Name: this.Value["Name"].(string),
 		LocationId: this.Value["LocationId"].(bson.ObjectId)}
 	band.Albums = []Album{}
 	if this.Value["Albums"] != nil {
@@ -200,7 +200,8 @@ func (this *MyDoc) AddAlbum(album Album) error {
 	doc := MyDoc{Id: this.Id, Value: bson.M{"Name": band.Name,
 		"LocationId": band.LocationId, "Albums": band.Albums}}
 	err := collection.Update(bson.M{"_id": doc.Id}, doc)
-
+*/
+	err := collection.Update(bson.M{"_id": this.Id}, bson.M{"$push": bson.M{"Values.Albums": album}})
 	return err
 }
 
